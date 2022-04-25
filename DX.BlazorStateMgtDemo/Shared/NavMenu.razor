@@ -1,0 +1,16 @@
+﻿<div class="sidebar @StateCssClass">
+<DxTreeView AllowSelectNodes="true" CssClass="app-sidebar">
+    <Nodes>
+        <DxTreeViewNode NavigateUrl="./" Text="Overview"></DxTreeViewNode>
+        <DxTreeViewNode NavigateUrl="grid" Text="Grid"></DxTreeViewNode>
+        <DxTreeViewNode NavigateUrl="grid-casc" Text="Grid Casc"></DxTreeViewNode>
+        <DxTreeViewNode NavigateUrl="grid-srv" Text="Grid State Machine"></DxTreeViewNode>
+        <DxTreeViewNode NavigateUrl="grid-mvvm" Text="Grid MVVM"></DxTreeViewNode>
+    </Nodes>
+</DxTreeView>
+<small>@DateTime.Now</small>
+</div>
+
+@code {
+    [Parameter] public string? StateCssClass { get; set; }
+}

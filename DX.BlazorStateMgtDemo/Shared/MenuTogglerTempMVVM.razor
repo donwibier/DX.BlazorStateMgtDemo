@@ -1,0 +1,23 @@
+﻿@implements IDisposable
+@inject ViewModels.IGridViewModel ViewModel
+
+<DxCheckBox CheckType="CheckType.Switch"
+                        LabelPosition="LabelPosition.Left"
+                        Checked="@ViewModel.ShowCelcius"
+                        CheckedChanged="@((bool t) => ViewModel.ToggleTemperatureScale())"
+                        Alignment="CheckBoxContentAlignment.SpaceBetween">
+                Show Temp in Celcius (<small>@DateTime.Now</small>)
+</DxCheckBox>
+
+@code {
+    void StateChangeTriggered() => StateHasChanged();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel.StateChanged += StateChangeTriggered;
+    }
+
+    public void Dispose() => ViewModel.StateChanged -= StateChangeTriggered;
+
+}

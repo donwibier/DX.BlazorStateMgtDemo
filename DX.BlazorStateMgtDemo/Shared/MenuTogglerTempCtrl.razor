@@ -1,0 +1,11 @@
+﻿<DxCheckBox CheckType="CheckType.Switch"
+                        LabelPosition="LabelPosition.Left"
+                        Checked="@MyState.ShowCelcius"
+                        CheckedChanged="@((bool t) => MyState.ShowCelcius = !MyState.ShowCelcius)"
+                        Alignment="CheckBoxContentAlignment.SpaceBetween">
+                Show Temp in Celcius (<small>@DateTime.Now</small>)
+</DxCheckBox>
+
+@code {
+    [CascadingParameter] MyCascadingState MyState { get; set; }
+}

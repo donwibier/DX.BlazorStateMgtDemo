@@ -1,0 +1,29 @@
+﻿@implements IDisposable
+@inject MyStateService MyState
+
+<DxCheckBox CheckType="CheckType.Switch"
+                        LabelPosition="LabelPosition.Left"
+                        Checked="@MyState.ShowCelcius"
+                        CheckedChanged="@((bool t) => MyState.SetShowCelcius(this, !MyState.ShowCelcius))"
+                        Alignment="CheckBoxContentAlignment.SpaceBetween">
+                Show Temp in Celcius (<small>@DateTime.Now</small>)
+</DxCheckBox>
+
+@code {
+    void ShowCelciusChanged(ComponentBase sender, bool showCelcius)
+    {
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        MyState.ShowCelciusChanged += ShowCelciusChanged;
+    }
+
+    public void Dispose()
+    {
+        MyState.ShowCelciusChanged -= ShowCelciusChanged;
+    }
+
+}

@@ -1,0 +1,22 @@
+﻿<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private bool showCelcius = false;
+    public bool ShowCelcius
+    {
+        get => showCelcius;
+        set
+        {
+            if (showCelcius != value) {
+                showCelcius = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+}

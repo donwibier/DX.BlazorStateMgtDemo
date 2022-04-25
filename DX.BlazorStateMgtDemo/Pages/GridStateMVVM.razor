@@ -1,0 +1,43 @@
+﻿@page "/grid-mvvm"
+@implements IDisposable
+
+@using DX.BlazorStateMgtDemo.Data
+
+@inject ViewModels.IGridViewModel ViewModel
+
+<h2>State management machine</h2>
+
+<p class="pb-2 pt-2 mw-1100">The DevExpress Grid for Blazor allows you to display and manage data via a tabular (rows/columns) UI metaphor.
+This page uses our Blazor Grid component to display weather forecast values.</p>
+
+@if (!ViewModel.HasData)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="pb-2">
+        <DxButton Text="@ViewModel.ButtonText" Click="@ViewModel.ToggleTemperatureScale" RenderStyle="@ViewModel.ButtonStyle"></DxButton>
+    </div>
+    <DxGrid Data="@ViewModel.Forecast"
+                CssClass="mw-1100">
+        <Columns>
+            <DxGridDataColumn Caption="Date" FieldName="@nameof(WeatherForecast.Date)" />
+            <DxGridDataColumn Caption="Temp in F." FieldName="@nameof(WeatherForecast.TemperatureF)" Visible="@ViewModel.ShowFahrenheit" />
+            <DxGridDataColumn Caption="Temp in C." FieldName="@nameof(WeatherForecast.TemperatureC)" Visible="@ViewModel.ShowCelcius"/>
+        </Columns>
+    </DxGrid>
+}
+<small>@DateTime.Now</small>
+@code {
+    void StateChangeTriggered() => StateHasChanged();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel.StateChanged += StateChangeTriggered;
+        ViewModel.Initialize();
+    }
+
+    public void Dispose() => ViewModel.StateChanged -= StateChangeTriggered;
+}

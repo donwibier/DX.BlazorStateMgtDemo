@@ -1,0 +1,50 @@
+﻿@page "/grid-casc"
+
+@using DX.BlazorStateMgtDemo.Data
+@inject WeatherForecastService ForecastService
+
+<h2>Without State management</h2>
+
+<p class="pb-2 pt-2 mw-1100">The DevExpress Grid for Blazor allows you to display and manage data via a tabular (rows/columns) UI metaphor.
+This page uses our Blazor Grid component to display weather forecast values.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="pb-2">
+        <DxButton Text="@ButtonText" Click="ToggleTempClick" RenderStyle="@ButtonStyle"></DxButton>
+    </div>
+    <DxGrid Data="@forecasts"
+                CssClass="mw-1100">
+        <Columns>
+            <DxGridDataColumn Caption="Date" FieldName="@nameof(WeatherForecast.Date)" />
+            <DxGridDataColumn Caption="Temp in F." FieldName="@nameof(WeatherForecast.TemperatureF)" Visible="@ShowFahrenheit" />
+            <DxGridDataColumn Caption="Temp in C." FieldName="@nameof(WeatherForecast.TemperatureC)" Visible="@MyState.ShowCelcius"/>
+        </Columns>
+    </DxGrid>
+}
+<small>@DateTime.Now</small>
+@code {
+    private WeatherForecast[]? forecasts;
+
+    [CascadingParameter] MyCascadingState MyState { get; set; }
+
+
+    public bool ShowFahrenheit { get => !MyState.ShowCelcius; set => MyState.ShowCelcius = !value; }
+    public string ButtonText { get => MyState.ShowCelcius ? "Show in Fahrenheit" : "Show in Celcius"; }
+    public ButtonRenderStyle ButtonStyle { get => MyState.ShowCelcius ? ButtonRenderStyle.Success : ButtonRenderStyle.Primary; }
+
+    void ToggleTempClick()
+    {
+        MyState.ShowCelcius = !MyState.ShowCelcius;
+        //StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}
